@@ -41,7 +41,10 @@
 (define-public (getTaskCompleteStatus (taskID int)  ) ;; to get Task complete status by id
   (let ((status (getTaskStatus taskID)))
     (begin
-    (if status (ok 1) (ok 0))
+    (if status 
+    (ok 1) ;; completed =1
+     (ok 0) ;; inprogress=0
+     )
       ))) 
 
 (define-public (addTask  ( task (buff 40)))   ;; to register new Task

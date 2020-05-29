@@ -20,6 +20,8 @@ const task2ID = 2;
 const task2Name = '"Task 2"';
 const task3ID = 3;
 const task3Name = '"Task 3"';
+const completed = 1;
+const inProgress = 0;
 
 describe("todo list contract test suite", () => {
   let toDoListClient: Client;
@@ -46,9 +48,7 @@ describe("todo list contract test suite", () => {
       method: { name: "getTaskCompleteStatus", args: [`${id}`] },
     });
     const receipt = await toDoListClient.submitQuery(query);
-    // console.log(receipt);
     const result = Result.unwrapInt(receipt);
-    // console.log(result);
     return result;
   };
 
@@ -105,14 +105,14 @@ describe("todo list contract test suite", () => {
       const statues = await getTaskCompleteStatus(task1ID);
       assert.equal(numberOfTasks, 1);
       assert.equal(task, "Task 1");
-      assert.equal(statues, 0);
+      assert.equal(statues, inProgress);
     });
     it("should toggle Task complete status", async () => {
       let statues = await getTaskCompleteStatus(task1ID);
-      assert.equal(statues, 0);
+      assert.equal(statues, inProgress);
       await toggleTaskStatus(user, task1ID);
       statues = await getTaskCompleteStatus(task1ID);
-      assert.equal(statues, 1);
+      assert.equal(statues, completed);
     });
 
     it("should get correct number of Tasks ", async () => {
@@ -131,7 +131,7 @@ describe("todo list contract test suite", () => {
     it("should get correct task ncompleted status ", async () => {
       await toggleTaskStatus(user, task1ID);
       let statues = await getTaskCompleteStatus(task1ID);
-      assert.equal(statues, 0);
+      assert.equal(statues, inProgress);
     });
   });
 
